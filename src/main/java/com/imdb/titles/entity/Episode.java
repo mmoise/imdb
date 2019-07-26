@@ -1,11 +1,14 @@
 package com.imdb.titles.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Episode {
 
     @EmbeddedId
