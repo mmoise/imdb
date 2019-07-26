@@ -20,6 +20,7 @@ public class InitiateDatabaseService implements CommandLineRunner {
 
         logger.info("Loading files");
         Long startTime = System.currentTimeMillis();
+        dataLoadService.LoadRatings();
         dataLoadService.LoadTitles();
         Long duration = System.currentTimeMillis() - startTime;
         logger.info("It took " + duration + " milliseconds to load all files");

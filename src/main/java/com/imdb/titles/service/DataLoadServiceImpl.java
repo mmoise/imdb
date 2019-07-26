@@ -10,13 +10,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class DataLoadServiceImpl implements DataLoadService {
 
     @Autowired
     private TitleService titleService;
+
+    private Map<String, Double> ratingsMap;
 
     private org.slf4j.Logger logger = LoggerFactory.getLogger(DataLoadServiceImpl.class);
 
@@ -49,6 +53,7 @@ public class DataLoadServiceImpl implements DataLoadService {
             if (!data[7].equals("\\N"))
                 title.setRunTimeMinutes(Integer.parseInt(data[7]));
 
+            title.setRating(ratingsMap.get(title.getId()));
             titles.add(title);
         }
         titleService.saveAll(titles);
@@ -63,8 +68,20 @@ public class DataLoadServiceImpl implements DataLoadService {
     }
 
     @Override
-    public void LoadRatings() {
-
+    public void LoadRatings() throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018ratings.tsv"));
+        String row;
+        ratingsMap = new HashMap<>();
+        logger.info("Loading Ratings");
+        Long startTime = System.currentTimeMillis();
+        while ((row = tsvReader.readLine()) != null) {
+            String[] data = row.split("\t");
+            if (!data[0].equals("\\N") && !data[1].equals("\\N")) {
+                ratingsMap.put(data[0], Double.parseDouble(data[1]));
+            }
+        }
+        Long duration = System.currentTimeMillis() - startTime;
+        logger.info("It took " + duration + " milliseconds to load ratings");
     }
 
     @Override
