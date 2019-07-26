@@ -6,6 +6,8 @@ import com.imdb.titles.repository.EpisodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class EpisodeServiceImpl implements EpisodeService{
 
@@ -15,5 +17,10 @@ public class EpisodeServiceImpl implements EpisodeService{
     @Override
     public Episode save(Episode episode) {
         return repository.save(episode);
+    }
+
+    @Override
+    public List<Episode> saveAll(List<Episode> episodes) {
+        return repository.saveAll(episodes);
     }
 }
