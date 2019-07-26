@@ -1,6 +1,7 @@
 package com.imdb.titles.service;
 
 
+import com.imdb.titles.entity.Actor;
 import com.imdb.titles.entity.Episode;
 import com.imdb.titles.entity.EpisodeId;
 import com.imdb.titles.entity.Title;
@@ -24,6 +25,9 @@ public class DataLoadServiceImpl implements DataLoadService {
 
     @Autowired
     private EpisodeService episodeService;
+
+    @Autowired
+    private ActorService actorService;
 
     private Map<String, Double> ratingsMap;
 
@@ -123,7 +127,28 @@ public class DataLoadServiceImpl implements DataLoadService {
     }
 
     @Override
-    public void LoadActors() {
+    public void LoadActors() throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018actors.tsv"));
+        String row;
+        List<Actor> actors = new ArrayList<>();
+        Long startTime = System.currentTimeMillis();
+        logger.info("loading actors");
+        while ((row = tsvReader.readLine()) != null) {
+            String[] data = row.split("\t");
+            Actor actor = new Actor();
+            if (!data[0].equals("\\N"))
+                actor.setActorId(data[0]);
+            if (!data[1].equals("\\N"))
+                actor.setPrimaryName(data[1]);
+            if (!data[2].equals("\\N"))
+                actor.setBirthYear(Integer.parseInt(data[2]));
+            if (!data[3].equals("\\N"))
+                actor.setDeathYear(Integer.parseInt(data[3]));
 
+            actors.add(actor);
+        }
+        actorService.saveAll(actors);
+        Long duration = System.currentTimeMillis() - startTime;
+        logger.info("It took " + duration + " milliseconds to load actors");
     }
 }
