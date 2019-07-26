@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DataLoadServiceImpl implements DataLoadService {
@@ -22,7 +24,7 @@ public class DataLoadServiceImpl implements DataLoadService {
     public void LoadTitles() throws IOException {
         BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018titles.tsv"));
         String row;
-
+        List<Title> titles = new ArrayList<>();
         logger.info("Loading Titles");
         Long startTime = System.currentTimeMillis();
         while ((row = tsvReader.readLine()) != null) {
@@ -47,8 +49,9 @@ public class DataLoadServiceImpl implements DataLoadService {
             if (!data[7].equals("\\N"))
                 title.setRunTimeMinutes(Integer.parseInt(data[7]));
 
-            titleService.save(title);
+            titles.add(title);
         }
+        titleService.saveAll(titles);
         Long duration = System.currentTimeMillis() - startTime;
         tsvReader.close();
         logger.info("It took " + duration + " milliseconds to load titles");
