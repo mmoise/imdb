@@ -1,5 +1,7 @@
 package com.imdb.titles.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Title {
 
     @Id
@@ -46,7 +49,7 @@ public class Title {
     @JoinColumn(name="TITLE_ID")
     private List<Episode> episodes = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name= "Cast", joinColumns = @JoinColumn(name = "TITLE_ID"), inverseJoinColumns = @JoinColumn(name = "ACTOR_ID"))
     private List<Actor> cast = new ArrayList<>();
 
