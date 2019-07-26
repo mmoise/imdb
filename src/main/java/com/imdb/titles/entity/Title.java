@@ -1,7 +1,9 @@
 package com.imdb.titles.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -40,7 +42,7 @@ public class Title {
     @Column(name="RATING")
     private Double rating;
 
-    @OneToMany
+    @OneToMany(cascade= CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name="TITLE_ID")
     private List<Episode> episodes = new ArrayList<>();
 

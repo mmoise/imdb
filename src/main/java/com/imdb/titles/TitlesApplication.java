@@ -45,7 +45,7 @@ public class TitlesApplication {
 		episode.setEpisodeId("episode1");
 		episode.setRating(3.5);
 		episode.setId(episodeId);
-		episodeService.save(episode);
+//		episode = episodeService.save(episode);
 
 		Title title = new Title();
 		title.setId("title1");
