@@ -20,11 +20,11 @@ public class InitiateDatabaseService implements CommandLineRunner {
 
         logger.info("Loading files");
         Long startTime = System.currentTimeMillis();
-        dataLoadService.LoadRatings();
-        dataLoadService.LoadTitles();
-        dataLoadService.LoadEpisodes();
-        dataLoadService.LoadActors();
-        dataLoadService.LoadCast();
+        dataLoadService.LoadRatings("src/main/resources/imdb/filtered/2018ratings.tsv");
+        dataLoadService.LoadTitles("src/main/resources/imdb/filtered/2018titles.tsv");
+        dataLoadService.LoadEpisodes("src/main/resources/imdb/filtered/2018episodes.tsv");
+        dataLoadService.LoadActors("src/main/resources/imdb/filtered/2018actors.tsv");
+        dataLoadService.LoadCast("src/main/resources/imdb/filtered/2018cast.tsv");
         Long duration = System.currentTimeMillis() - startTime;
         logger.info("It took " + duration + " milliseconds to load all files");
     }

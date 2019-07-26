@@ -5,13 +5,13 @@ import java.io.IOException;
 
 public interface DataLoadService {
 
-    void LoadTitles() throws IOException;
+    void LoadTitles(String pathToFile) throws IOException;
 
-    void LoadEpisodes() throws IOException;
+    void LoadEpisodes(String pathToFile) throws IOException;
 
-    void LoadRatings() throws IOException;
+    void LoadRatings(String pathToFile) throws IOException;
 
-    void LoadCast() throws IOException;
+    void LoadCast(String pathToFile) throws IOException;
 
-    void LoadActors() throws IOException;
+    void LoadActors(String pathToFile) throws IOException;
 }

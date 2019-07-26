@@ -37,8 +37,8 @@ public class DataLoadServiceImpl implements DataLoadService {
     private org.slf4j.Logger logger = LoggerFactory.getLogger(DataLoadServiceImpl.class);
 
     @Override
-    public void LoadTitles() throws IOException {
-        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018titles.tsv"));
+    public void LoadTitles(String pathToFile) throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         List<Title> titles = new ArrayList<>();
         logger.info("Loading Titles");
@@ -75,8 +75,8 @@ public class DataLoadServiceImpl implements DataLoadService {
     }
 
     @Override
-    public void LoadEpisodes() throws IOException {
-        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018episodes.tsv"));
+    public void LoadEpisodes(String pathToFile) throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
 
         List<Episode> episodes = new ArrayList<>();
@@ -108,8 +108,8 @@ public class DataLoadServiceImpl implements DataLoadService {
     }
 
     @Override
-    public void LoadRatings() throws IOException {
-        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018ratings.tsv"));
+    public void LoadRatings(String pathToFile) throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         ratingsMap = new HashMap<>();
         logger.info("Loading Ratings");
@@ -124,8 +124,8 @@ public class DataLoadServiceImpl implements DataLoadService {
         logger.info("It took " + duration + " milliseconds to load ratings");
     }
 
-    public void LoadCast() throws IOException {
-        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018cast.tsv"));
+    public void LoadCast(String pathToFile) throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         Map<String, List<String>> castMap = new HashMap<>();
         Long startTime = System.currentTimeMillis();
@@ -167,8 +167,8 @@ public class DataLoadServiceImpl implements DataLoadService {
     }
 
     @Override
-    public void LoadActors() throws IOException {
-        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018actors.tsv"));
+    public void LoadActors(String pathToFile) throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         List<Actor> actors = new ArrayList<>();
         Long startTime = System.currentTimeMillis();
