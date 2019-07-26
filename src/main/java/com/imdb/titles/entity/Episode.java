@@ -4,7 +4,6 @@ package com.imdb.titles.entity;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Episode {
@@ -15,8 +14,8 @@ public class Episode {
     @Column(name="EPISODE_ID")
     private String episodeId;
 
-    @OneToOne
-    private Rating rating;
+    @Column(name="RATING")
+    private Double rating;
 
     public EpisodeId getId() {
         return id;
@@ -34,11 +33,11 @@ public class Episode {
         this.episodeId = episodeId;
     }
 
-    public Rating getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Rating rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 

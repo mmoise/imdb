@@ -1,7 +1,6 @@
 package com.imdb.titles;
 
 import com.imdb.titles.entity.Actor;
-import com.imdb.titles.entity.Rating;
 import com.imdb.titles.entity.Title;
 import com.imdb.titles.service.TitleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +24,10 @@ public class TitlesApplication {
 		actor.setActorId("actor1");
 		actor.setPrimaryName("Tom Cruise");
 
-		Rating rating = new Rating();
-		rating.setTitleId("title1");
-		rating.setAverageRating(5.5);
-		rating.setNumVotes(100);
-
 		Title title = new Title();
 		title.setId("title1");
 		title.setTitleType("movie");
-		title.setRating(rating);
+		title.setRating(9.5);
 		title.setCast(Collections.singletonList(actor));
 
 		titleService.save(title);

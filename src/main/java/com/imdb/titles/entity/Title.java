@@ -7,7 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +37,8 @@ public class Title {
     @Column(name="RUNTIME_MINUTES")
     private Integer runTimeMinutes;
 
-    @OneToOne
-    private Rating rating;
+    @Column(name="RATING")
+    private Double rating;
 
     @OneToMany
     @JoinColumn(name="TITLE_ID")
@@ -129,11 +128,11 @@ public class Title {
         this.cast = cast;
     }
 
-    public Rating getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Rating rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
