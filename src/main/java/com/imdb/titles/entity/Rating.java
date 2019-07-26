@@ -3,10 +3,12 @@ package com.imdb.titles.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Rating {
 
+    @Id
     @Column(name = "TITLE_ID")
     private String titleId;
 
