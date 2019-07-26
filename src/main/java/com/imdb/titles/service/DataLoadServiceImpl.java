@@ -24,7 +24,7 @@ import java.util.Map;
 public class DataLoadServiceImpl implements DataLoadService {
 
     @Autowired
-    private TitleService titleService;
+    private PaginatedTitleService titleService;
 
     @Autowired
     private EpisodeService episodeService;
