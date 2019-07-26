@@ -2,6 +2,7 @@ package com.imdb.titles.service;
 
 
 import com.imdb.titles.entity.Title;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,13 +16,16 @@ public class DataLoadServiceImpl implements DataLoadService {
     @Autowired
     private TitleService titleService;
 
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(DataLoadServiceImpl.class);
+
     @Override
     public void LoadTitles() throws IOException {
         BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018titles.tsv"));
         String row;
 
+        logger.info("Loading Titles");
+        Long startTime = System.currentTimeMillis();
         while ((row = tsvReader.readLine()) != null) {
-
             String[] data = row.split("\t");
             Title title = new Title();
             if (!data[0].equals("\\N"))
@@ -45,7 +49,9 @@ public class DataLoadServiceImpl implements DataLoadService {
 
             titleService.save(title);
         }
+        Long duration = System.currentTimeMillis() - startTime;
         tsvReader.close();
+        logger.info("It took " + duration + " milliseconds to load titles");
     }
 
     @Override
