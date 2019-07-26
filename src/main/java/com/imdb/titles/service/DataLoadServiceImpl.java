@@ -1,6 +1,8 @@
 package com.imdb.titles.service;
 
 
+import com.imdb.titles.entity.Episode;
+import com.imdb.titles.entity.EpisodeId;
 import com.imdb.titles.entity.Title;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class DataLoadServiceImpl implements DataLoadService {
 
     @Autowired
     private TitleService titleService;
+
+    @Autowired
+    private EpisodeService episodeService;
 
     private Map<String, Double> ratingsMap;
 
@@ -63,8 +68,36 @@ public class DataLoadServiceImpl implements DataLoadService {
     }
 
     @Override
-    public void LoadEpisodes() {
+    public void LoadEpisodes() throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018episodes.tsv"));
+        String row;
 
+        List<Episode> episodes = new ArrayList<>();
+        Long startTime = System.currentTimeMillis();
+        logger.info("loading episodes");
+        while ((row = tsvReader.readLine()) != null) {
+            String[] data = row.split("\t");
+            Episode episode = new Episode();
+            EpisodeId id = new EpisodeId();
+            if (!data[0].equals("\\N"))
+                episode.setEpisodeId(data[0]);
+            if (!data[1].equals("\\N"))
+                id.setTitleId(data[1]);
+            if (!data[2].equals("\\N"))
+                id.setSeasonNumber(Integer.parseInt(data[2]));
+            if (!data[3].equals("\\N"))
+                id.setEpisodeNumber(Integer.parseInt(data[3]));
+
+            episode.setId(id);
+            Double rating = ratingsMap.get(episode.getEpisodeId());
+            episode.setRating(rating);
+            episodes.add(episode);
+        }
+
+        tsvReader.close();
+        episodeService.saveAll(episodes);
+        Long duration = System.currentTimeMillis() - startTime;
+        logger.info("It took " + duration + " milliseconds to load episodes");
     }
 
     @Override
