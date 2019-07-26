@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,9 +122,46 @@ public class DataLoadServiceImpl implements DataLoadService {
         logger.info("It took " + duration + " milliseconds to load ratings");
     }
 
-    @Override
-    public void LoadCast() {
+    public void LoadCast() throws IOException {
+        BufferedReader tsvReader = new BufferedReader(new FileReader("src/main/resources/imdb/filtered/2018cast.tsv"));
+        String row;
+        Map<String, List<String>> castMap = new HashMap<>();
+        Long startTime = System.currentTimeMillis();
+        while ((row = tsvReader.readLine()) != null) {
+            String[] data = row.split("\t");
+            String titleId = data[0];
+            String actorId = data[2];
 
+            if (!titleId.equals("\\N") && !actorId.equals("\\N")) {
+                if (castMap.containsKey(titleId)) {
+                    castMap.get(titleId).add(actorId);
+                }
+                else {
+                    castMap.put(titleId, new ArrayList<>(Arrays.asList(actorId)));
+                }
+            }
+        }
+        List<Actor> actors = actorService.findAll();
+        List<Title> titleList = titleService.findAll();
+
+        Map<String, Actor> actorMap = new HashMap<>();
+        for (Actor actor: actors) {
+            actorMap.put(actor.getActorId(), actor);
+        }
+
+        for (Title title: titleList) {
+            List<String> mappedActors = castMap.get(title.getId());
+            if (mappedActors != null && !mappedActors.isEmpty()) {
+                for (String actorId : mappedActors) {
+                    Actor actor = actorMap.get(actorId);
+                    title.getCast().add(actor);
+                }
+            }
+        }
+        System.out.println("I HAVE LOADED " + castMap.size() + " Cast Members");
+        titleService.saveAll(titleList);
+        Long duration = System.currentTimeMillis() - startTime;
+        System.out.println("IT TOOK " + duration + " milliseconds to load cast");
     }
 
     @Override

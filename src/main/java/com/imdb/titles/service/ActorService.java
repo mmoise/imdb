@@ -10,4 +10,6 @@ public interface ActorService {
     Actor save(Actor actor);
 
     List<Actor> saveAll(List<Actor> actors);
+
+    List<Actor> findAll();
 }

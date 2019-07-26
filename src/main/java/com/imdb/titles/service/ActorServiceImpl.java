@@ -24,4 +24,9 @@ public class ActorServiceImpl implements ActorService {
     public List<Actor> saveAll(List<Actor> actors) {
         return repository.saveAll(actors);
     }
+
+    @Override
+    public List<Actor> findAll() {
+        return repository.findAll();
+    }
 }

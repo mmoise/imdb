@@ -10,4 +10,8 @@ public interface TitleService {
     Title save(Title title);
 
     List<Title> saveAll(List<Title> titles);
+
+    List<Title> findAll();
+
+    Title findById(String titleId);
 }

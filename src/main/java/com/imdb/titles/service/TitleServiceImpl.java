@@ -23,4 +23,14 @@ public class TitleServiceImpl implements TitleService {
     public List<Title> saveAll(List<Title> titles) {
         return repository.saveAll(titles);
     }
+
+    @Override
+    public List<Title> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Title findById(String titleId) {
+        return repository.getOne(titleId);
+    }
 }
