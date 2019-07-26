@@ -6,6 +6,8 @@ import com.imdb.titles.repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class TitleServiceImpl implements TitleService {
 
@@ -15,5 +17,10 @@ public class TitleServiceImpl implements TitleService {
     @Override
     public Title save(Title title) {
         return repository.save(title);
+    }
+
+    @Override
+    public List<Title> saveAll(List<Title> titles) {
+        return repository.saveAll(titles);
     }
 }
