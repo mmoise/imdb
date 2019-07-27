@@ -16,11 +16,6 @@ public class ActorServiceImpl implements ActorService {
     private ActorRepository repository;
 
     @Override
-    public Actor save(Actor actor) {
-        return repository.save(actor);
-    }
-
-    @Override
     public List<Actor> saveAll(List<Actor> actors) {
         return repository.saveAll(actors);
     }

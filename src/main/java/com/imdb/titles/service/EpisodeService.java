@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface EpisodeService {
 
-    Episode save(Episode episode);
-
     List<Episode> saveAll(List<Episode> episodes);
 }

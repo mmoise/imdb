@@ -15,11 +15,6 @@ public class EpisodeServiceImpl implements EpisodeService{
     private EpisodeRepository repository;
 
     @Override
-    public Episode save(Episode episode) {
-        return repository.save(episode);
-    }
-
-    @Override
     public List<Episode> saveAll(List<Episode> episodes) {
         return repository.saveAll(episodes);
     }
