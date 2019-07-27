@@ -69,8 +69,10 @@ public class DataLoadServiceImpl implements DataLoadService {
             if (!data[7].equals("\\N"))
                 title.setRunTimeMinutes(Integer.parseInt(data[7]));
 
-            // use the map containing the ratings data to retrieve the rating for this specific title
-            title.setRating(ratingsMap.get(title.getId()));
+            // use the map containing the ratings data to retrieve the rating for this specific title. set the rating
+            // to 0 if it is null
+            Double rating = ratingsMap.get(title.getId()) == null ? 0.0 : ratingsMap.get(title.getId());
+            title.setRating(rating);
             titles.add(title);
         }
         // save all of the titles
@@ -104,8 +106,9 @@ public class DataLoadServiceImpl implements DataLoadService {
                 id.setEpisodeNumber(Integer.parseInt(data[3]));
 
             episode.setId(id);
-            // use the map containing the ratings data to retrieve the rating for this specific episode
-            Double rating = ratingsMap.get(episode.getEpisodeId());
+            // use the map containing the ratings data to retrieve the rating for this specific episode. Set the rating to
+            // zero if it is null
+            Double rating = ratingsMap.get(episode.getEpisodeId()) == null ? 0.0 : ratingsMap.get(episode.getEpisodeId());
             episode.setRating(rating);
             episodes.add(episode);
         }
