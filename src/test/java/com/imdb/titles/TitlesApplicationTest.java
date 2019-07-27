@@ -37,6 +37,7 @@ public class TitlesApplicationTest {
 
     @Test
     public void testLoadData() throws IOException {
+
         // Load Test Files
         dataLoadService.LoadRatings("src/test/resources/imdb/2018ratings_test.tsv");
         dataLoadService.LoadTitles("src/test/resources/imdb/2018titles_test.tsv");
