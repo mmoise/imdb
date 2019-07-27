@@ -38,14 +38,18 @@ public class DataLoadServiceImpl implements DataLoadService {
 
     @Override
     public void LoadTitles(String pathToFile) throws IOException {
+        // Read the file containing the title information
         BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         List<Title> titles = new ArrayList<>();
         logger.info("Loading Titles");
         Long startTime = System.currentTimeMillis();
+        // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
+            // split each line of the tab delimited file to a string array
             String[] data = row.split("\t");
             Title title = new Title();
+            // create a title object based on the column placement of the values in the input file
             if (!data[0].equals("\\N"))
                 title.setId(data[0]);
             if (!data[1].equals("\\N"))
@@ -65,9 +69,11 @@ public class DataLoadServiceImpl implements DataLoadService {
             if (!data[7].equals("\\N"))
                 title.setRunTimeMinutes(Integer.parseInt(data[7]));
 
+            // use the map containing the ratings data to retrieve the rating for this specific title
             title.setRating(ratingsMap.get(title.getId()));
             titles.add(title);
         }
+        // save all of the titles
         titleService.saveAll(titles);
         Long duration = System.currentTimeMillis() - startTime;
         tsvReader.close();
@@ -76,16 +82,18 @@ public class DataLoadServiceImpl implements DataLoadService {
 
     @Override
     public void LoadEpisodes(String pathToFile) throws IOException {
+        // Read the file containing the episode information
         BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
-
         List<Episode> episodes = new ArrayList<>();
         Long startTime = System.currentTimeMillis();
         logger.info("loading episodes");
+        // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
             String[] data = row.split("\t");
             Episode episode = new Episode();
             EpisodeId id = new EpisodeId();
+            // create an episode object based on the column placement of the values in the input file
             if (!data[0].equals("\\N"))
                 episode.setEpisodeId(data[0]);
             if (!data[1].equals("\\N"))
@@ -96,12 +104,14 @@ public class DataLoadServiceImpl implements DataLoadService {
                 id.setEpisodeNumber(Integer.parseInt(data[3]));
 
             episode.setId(id);
+            // use the map containing the ratings data to retrieve the rating for this specific episode
             Double rating = ratingsMap.get(episode.getEpisodeId());
             episode.setRating(rating);
             episodes.add(episode);
         }
 
         tsvReader.close();
+        // save all of the episodes
         episodeService.saveAll(episodes);
         Long duration = System.currentTimeMillis() - startTime;
         logger.info("It took " + duration + " milliseconds to load episodes");
@@ -109,13 +119,17 @@ public class DataLoadServiceImpl implements DataLoadService {
 
     @Override
     public void LoadRatings(String pathToFile) throws IOException {
+        // Read the file containing the ratings information
         BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         ratingsMap = new HashMap<>();
         logger.info("Loading Ratings");
         Long startTime = System.currentTimeMillis();
+        // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
             String[] data = row.split("\t");
+            // create a map of titleId to rating. This map will be used later in order to populate ratings on titles and episodes
+            // without needing an additional call to the database
             if (!data[0].equals("\\N") && !data[1].equals("\\N")) {
                 ratingsMap.put(data[0], Double.parseDouble(data[1]));
             }
@@ -125,17 +139,20 @@ public class DataLoadServiceImpl implements DataLoadService {
     }
 
     public void LoadCast(String pathToFile) throws IOException {
+        // Read the file containing the cast information
         BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         Map<String, List<String>> castMap = new HashMap<>();
         Long startTime = System.currentTimeMillis();
         logger.info("Loading Cast");
+        // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
             String[] data = row.split("\t");
             String titleId = data[0];
             String actorId = data[2];
 
             if (!titleId.equals("\\N") && !actorId.equals("\\N")) {
+                // create a map of titleIds to actorIds
                 if (castMap.containsKey(titleId)) {
                     castMap.get(titleId).add(actorId);
                 }
@@ -144,14 +161,18 @@ public class DataLoadServiceImpl implements DataLoadService {
                 }
             }
         }
+        // retrieve all actors and titles
         List<Actor> actors = actorService.findAll();
         List<Title> titleList = titleService.findAll();
 
+        // create a map of ActorIds to Actors. This will be used in order to avoid making another DB call
         Map<String, Actor> actorMap = new HashMap<>();
         for (Actor actor: actors) {
             actorMap.put(actor.getActorId(), actor);
         }
 
+        // iterate through the list of titles and use the cast map to get a list of all of the associated actors with that title.
+        // Use the list of actorIds and the actorMap to get the actor objects and add it to the cast list on the title
         for (Title title: titleList) {
             List<String> mappedActors = castMap.get(title.getId());
             if (mappedActors != null && !mappedActors.isEmpty()) {
@@ -161,6 +182,7 @@ public class DataLoadServiceImpl implements DataLoadService {
                 }
             }
         }
+        // save all of the titles
         titleService.saveAll(titleList);
         Long duration = System.currentTimeMillis() - startTime;
         logger.info("It took " + duration + " milliseconds to load cast");
@@ -168,14 +190,17 @@ public class DataLoadServiceImpl implements DataLoadService {
 
     @Override
     public void LoadActors(String pathToFile) throws IOException {
+        // Read the file containing the actor information
         BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         List<Actor> actors = new ArrayList<>();
         Long startTime = System.currentTimeMillis();
         logger.info("loading actors");
+        // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
             String[] data = row.split("\t");
             Actor actor = new Actor();
+            // create an actor object based on the column placement of the values in the input file
             if (!data[0].equals("\\N"))
                 actor.setActorId(data[0]);
             if (!data[1].equals("\\N"))
@@ -187,6 +212,7 @@ public class DataLoadServiceImpl implements DataLoadService {
 
             actors.add(actor);
         }
+        // save all of the actors
         actorService.saveAll(actors);
         Long duration = System.currentTimeMillis() - startTime;
         logger.info("It took " + duration + " milliseconds to load actors");
