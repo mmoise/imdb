@@ -18,7 +18,7 @@ public class RatingsController {
     private RatingRandomizerService randomizer;
 
     @RequestMapping(value = "/ratings",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RatingsResponse> generateRatings() {
         randomizer.randomizeRatings();
