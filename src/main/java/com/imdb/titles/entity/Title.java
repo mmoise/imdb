@@ -148,11 +148,13 @@ public class Title {
 
     @JsonProperty(value = "rating")
     public Double getCalcRating() {
+        // if the title is not a tv series then return the original rating
         if (!this.titleType.equals("tvSeries")) {
             return this.rating;
         }
         else
-        {
+        {   // calculate the average rating of all the episodes where their current rating
+            // is not zero (zero is the default value
             Double calculatedRating = episodes.stream()
                     .mapToDouble(Episode::getRating)
                     .filter(rating -> rating > 0.0)
