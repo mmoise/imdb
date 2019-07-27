@@ -106,13 +106,17 @@ public class TitlesApplicationTest {
     public void testRatingsRandomizer() {
 
         String titleId = "tt8865058";
+
+        // getting original values for rating, calculated rating for title and rating for its episodes
         Title tvSeries = titleService.findById(titleId);
         Double originalRating = tvSeries.getRating();
         Double originalCalculatedRating = tvSeries.getCalculatedRating();
         Map<String, Double> episodeMap = new HashMap<>();
         tvSeries.getEpisodes().stream()
                 .forEach(episode -> episodeMap.put(episode.getEpisodeId(), episode.getRating()));
+
         randomizerService.randomizeRatings();
+        // getting the updated ratings and verifying that they are different
         tvSeries = titleService.findById(titleId);
         assertNotSame(tvSeries.getRating(), originalRating);
         assertNotSame(tvSeries.getCalculatedRating(), originalCalculatedRating);
