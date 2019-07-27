@@ -6,6 +6,7 @@ import com.imdb.titles.entity.Episode;
 import com.imdb.titles.entity.Title;
 import com.imdb.titles.service.DataLoadService;
 import com.imdb.titles.service.PaginatedTitleService;
+import com.imdb.titles.service.RatingRandomizerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -30,6 +34,9 @@ public class TitlesApplicationTest {
 
     @Autowired
     private PaginatedTitleService titleService;
+
+    @Autowired
+    private RatingRandomizerService randomizerService;
 
     @Test
     public void contextLoads() {
@@ -93,6 +100,25 @@ public class TitlesApplicationTest {
         Title movie = titleService.findById("tt0069049");
         assertEquals("movie", movie.getTitleType());
         assertTrue(movie.getRating().equals(movie.getCalculatedRating()));
+    }
+
+    @Test
+    public void testRatingsRandomizer() {
+
+        String titleId = "tt8865058";
+        Title tvSeries = titleService.findById(titleId);
+        Double originalRating = tvSeries.getRating();
+        Double originalCalculatedRating = tvSeries.getCalculatedRating();
+        Map<String, Double> episodeMap = new HashMap<>();
+        tvSeries.getEpisodes().stream()
+                .forEach(episode -> episodeMap.put(episode.getEpisodeId(), episode.getRating()));
+        randomizerService.randomizeRatings();
+        tvSeries = titleService.findById(titleId);
+        assertNotSame(tvSeries.getRating(), originalRating);
+        assertNotSame(tvSeries.getCalculatedRating(), originalCalculatedRating);
+        for (Episode episode: tvSeries.getEpisodes()) {
+            assertNotSame(episode.getRating(), episodeMap.get(episode.getEpisodeId()));
+        }
     }
 
 }
