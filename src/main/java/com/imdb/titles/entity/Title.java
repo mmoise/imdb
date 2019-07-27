@@ -1,7 +1,9 @@
 package com.imdb.titles.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,6 +47,7 @@ public class Title {
     private Integer runTimeMinutes;
 
     @Column(name="RATING")
+    @JsonIgnore
     private Double rating;
 
     @OneToMany(cascade= CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -141,6 +144,11 @@ public class Title {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    @JsonProperty(value = "rating")
+    public Double getCalcRating() {
+        return 99.99;
     }
 
 }
