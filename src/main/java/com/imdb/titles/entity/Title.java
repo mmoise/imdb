@@ -148,7 +148,19 @@ public class Title {
 
     @JsonProperty(value = "rating")
     public Double getCalcRating() {
-        return 99.99;
+        if (!this.titleType.equals("tvSeries")) {
+            return this.rating;
+        }
+        else
+        {
+            Double calculatedRating = episodes.stream()
+                    .mapToDouble(Episode::getRating)
+                    .filter(rating -> rating > 0.0)
+                    .average()
+                    .orElse(this.rating);
+
+            return calculatedRating;
+        }
     }
 
 }
