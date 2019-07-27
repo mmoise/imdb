@@ -30,7 +30,7 @@ public class TitleController {
     @RequestMapping(value = "/titles/{titleId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    Title getTitle(@PathVariable String titleId) {
+    public Title getTitle(@PathVariable String titleId) {
         return paginatedTitleService.findById(titleId);
     }
 

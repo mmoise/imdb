@@ -27,6 +27,9 @@ public class RatingRandomizerService {
     }
 
     public Double getRandomNumber() {
-        return (Math.random()*((10-1)+1))+1;
+
+        double randomNum = (Math.random()*((10-1)+1))+1;
+        double scale = Math.pow(10, 1);
+        return Math.round(randomNum * scale) / scale;
     }
 }
