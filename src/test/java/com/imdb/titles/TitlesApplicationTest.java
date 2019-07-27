@@ -93,7 +93,6 @@ public class TitlesApplicationTest {
         Title movie = titleService.findById("tt0069049");
         assertEquals("movie", movie.getTitleType());
         assertTrue(movie.getRating().equals(movie.getCalculatedRating()));
-
     }
 
 }
