@@ -13,7 +13,7 @@ public class InitiateDatabaseService implements CommandLineRunner {
     @Autowired
     private DataLoadService dataLoadService;
 
-    private Logger logger = LoggerFactory.getLogger(InitiateDatabaseService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitiateDatabaseService.class);
 
     @Override
     /**
@@ -22,7 +22,7 @@ public class InitiateDatabaseService implements CommandLineRunner {
      */
     public void run(String... strings) throws Exception {
 
-        logger.info("Loading files");
+        LOGGER.info("Loading files");
         Long startTime = System.currentTimeMillis();
 
         dataLoadService.LoadRatings("src/main/resources/imdb/filtered/2018ratings.tsv");
@@ -32,6 +32,6 @@ public class InitiateDatabaseService implements CommandLineRunner {
         dataLoadService.LoadCast("src/main/resources/imdb/filtered/2018cast.tsv");
 
         Long duration = System.currentTimeMillis() - startTime;
-        logger.info("It took " + duration + " milliseconds to load all files");
+        LOGGER.info("It took " + duration + " milliseconds to load all files");
     }
 }

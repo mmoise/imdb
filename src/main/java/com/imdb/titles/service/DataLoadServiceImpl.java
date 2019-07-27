@@ -34,7 +34,7 @@ public class DataLoadServiceImpl implements DataLoadService {
 
     private Map<String, Double> ratingsMap;
 
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(DataLoadServiceImpl.class);
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DataLoadServiceImpl.class);
 
     @Override
     public void LoadTitles(String pathToFile) throws IOException {
@@ -42,7 +42,7 @@ public class DataLoadServiceImpl implements DataLoadService {
         BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         List<Title> titles = new ArrayList<>();
-        logger.info("Loading Titles");
+        LOGGER.info("Loading Titles");
         Long startTime = System.currentTimeMillis();
         // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
@@ -79,7 +79,7 @@ public class DataLoadServiceImpl implements DataLoadService {
         titleService.saveAll(titles);
         Long duration = System.currentTimeMillis() - startTime;
         tsvReader.close();
-        logger.info("It took " + duration + " milliseconds to load titles");
+        LOGGER.info("It took " + duration + " milliseconds to load titles");
     }
 
     @Override
@@ -89,7 +89,7 @@ public class DataLoadServiceImpl implements DataLoadService {
         String row;
         List<Episode> episodes = new ArrayList<>();
         Long startTime = System.currentTimeMillis();
-        logger.info("loading episodes");
+        LOGGER.info("loading episodes");
         // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
             String[] data = row.split("\t");
@@ -116,7 +116,7 @@ public class DataLoadServiceImpl implements DataLoadService {
         // save all of the episodes
         episodeService.saveAll(episodes);
         Long duration = System.currentTimeMillis() - startTime;
-        logger.info("It took " + duration + " milliseconds to load episodes");
+        LOGGER.info("It took " + duration + " milliseconds to load episodes");
     }
 
     @Override
@@ -125,7 +125,7 @@ public class DataLoadServiceImpl implements DataLoadService {
         BufferedReader tsvReader = new BufferedReader(new FileReader(pathToFile));
         String row;
         ratingsMap = new HashMap<>();
-        logger.info("Loading Ratings");
+        LOGGER.info("Loading Ratings");
         Long startTime = System.currentTimeMillis();
         // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
@@ -137,7 +137,7 @@ public class DataLoadServiceImpl implements DataLoadService {
             }
         }
         Long duration = System.currentTimeMillis() - startTime;
-        logger.info("It took " + duration + " milliseconds to load ratings");
+        LOGGER.info("It took " + duration + " milliseconds to load ratings");
     }
 
     public void LoadCast(String pathToFile) throws IOException {
@@ -146,7 +146,7 @@ public class DataLoadServiceImpl implements DataLoadService {
         String row;
         Map<String, List<String>> castMap = new HashMap<>();
         Long startTime = System.currentTimeMillis();
-        logger.info("Loading Cast");
+        LOGGER.info("Loading Cast");
         // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
             String[] data = row.split("\t");
@@ -187,7 +187,7 @@ public class DataLoadServiceImpl implements DataLoadService {
         // save all of the titles
         titleService.saveAll(titleList);
         Long duration = System.currentTimeMillis() - startTime;
-        logger.info("It took " + duration + " milliseconds to load cast");
+        LOGGER.info("It took " + duration + " milliseconds to load cast");
     }
 
     @Override
@@ -197,7 +197,7 @@ public class DataLoadServiceImpl implements DataLoadService {
         String row;
         List<Actor> actors = new ArrayList<>();
         Long startTime = System.currentTimeMillis();
-        logger.info("loading actors");
+        LOGGER.info("loading actors");
         // Iterate through each line of the file
         while ((row = tsvReader.readLine()) != null) {
             String[] data = row.split("\t");
@@ -217,6 +217,6 @@ public class DataLoadServiceImpl implements DataLoadService {
         // save all of the actors
         actorService.saveAll(actors);
         Long duration = System.currentTimeMillis() - startTime;
-        logger.info("It took " + duration + " milliseconds to load actors");
+        LOGGER.info("It took " + duration + " milliseconds to load actors");
     }
 }
