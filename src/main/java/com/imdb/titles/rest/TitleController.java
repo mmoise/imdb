@@ -3,6 +3,7 @@ package com.imdb.titles.rest;
 
 import com.imdb.titles.entity.Title;
 import com.imdb.titles.service.PaginatedTitleService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api(value = "Retrieve 2018 Titles", description = "Returns details related to titles created in 2018")
 public class TitleController {
 
 
