@@ -147,7 +147,7 @@ public class Title {
     }
 
     @JsonProperty(value = "rating")
-    public Double getCalcRating() {
+    public Double getCalculatedRating() {
         // if the title is not a tv series then return the original rating
         if (!this.titleType.equals("tvSeries")) {
             return this.rating;

@@ -65,4 +65,24 @@ public class TitlesApplicationTest {
         // assertEquals(2, episodes.size());
     }
 
+    @Test
+    public void testCalculatedRating() {
+        Title tv = titleService.findById("tt8865058");
+        assertEquals("tvSeries", tv.getTitleType());
+
+        List<Episode> episodes = tv.getEpisodes();
+        Double calculatedRating = episodes.stream()
+                .mapToDouble(Episode::getRating)
+                .filter(rating -> rating > 0.0)
+                .average()
+                .orElse(0.0);
+        assertEquals(calculatedRating, tv.getCalculatedRating());
+        assertTrue(!tv.getRating().equals(tv.getCalculatedRating()));
+
+        Title movie = titleService.findById("tt0069049");
+        assertEquals("movie", movie.getTitleType());
+        assertTrue(movie.getRating().equals(movie.getCalculatedRating()));
+
+    }
+
 }
