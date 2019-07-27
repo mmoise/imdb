@@ -4,6 +4,9 @@ package com.imdb.titles;
 import com.imdb.titles.entity.Actor;
 import com.imdb.titles.entity.Episode;
 import com.imdb.titles.entity.Title;
+import com.imdb.titles.model.RatingsResponse;
+import com.imdb.titles.rest.RatingsController;
+import com.imdb.titles.rest.TitleController;
 import com.imdb.titles.service.DataLoadService;
 import com.imdb.titles.service.PaginatedTitleService;
 import com.imdb.titles.service.RatingRandomizerService;
@@ -11,6 +14,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
@@ -38,9 +45,12 @@ public class TitlesApplicationTest {
     @Autowired
     private RatingRandomizerService randomizerService;
 
-    @Test
-    public void contextLoads() {
-    }
+    @Autowired
+    private TitleController titleController;
+
+    @Autowired
+    private RatingsController ratingsController;
+
 
     @Test
     public void testLoadData() throws IOException {
@@ -72,6 +82,7 @@ public class TitlesApplicationTest {
         // verify that the episodes have been correctly associated with the title
         List<Episode> episodes = tvSeries.getEpisodes();
         assertNotNull(episodes);
+
         // TODO: Fix test configuraiton
         // Figure out why this test is failing. I've verified tht the data is being loaded correctly if I switch
         // the application to use the test files. It may be related to running the app in a test environment
@@ -123,6 +134,30 @@ public class TitlesApplicationTest {
         for (Episode episode: tvSeries.getEpisodes()) {
             assertNotSame(episode.getRating(), episodeMap.get(episode.getEpisodeId()));
         }
+    }
+
+    @Test
+     public void testGetTitle() {
+        ResponseEntity<Title> titleResponse = titleController.getTitle("tt8865058");
+        assertEquals(HttpStatus.OK, titleResponse.getStatusCode());
+        assertNotNull(titleResponse.getBody());
+        assertEquals("tvSeries", titleResponse.getBody().getTitleType());
+    }
+
+    @Test
+    public void testGetAllTitles() {
+        PageRequest pageRequest = PageRequest.of(0,3);
+        ResponseEntity<Page<Title>> titleResponse = titleController.getAllTitles(pageRequest);
+        assertEquals(HttpStatus.OK, titleResponse.getStatusCode());
+        assertNotNull(titleResponse.getBody());
+        assertEquals(3, titleResponse.getBody().getContent().size());
+    }
+
+    @Test
+    public void testRandomizeRatings() {
+        ResponseEntity<RatingsResponse> ratingResponse = ratingsController.generateRatings();
+        assertEquals(HttpStatus.OK, ratingResponse.getStatusCode());
+        assertNotNull(ratingResponse.getBody());
     }
 
 }
