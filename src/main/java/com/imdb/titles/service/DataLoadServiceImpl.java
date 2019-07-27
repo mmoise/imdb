@@ -109,7 +109,6 @@ public class DataLoadServiceImpl implements DataLoadService {
             episode.setRating(rating);
             episodes.add(episode);
         }
-
         tsvReader.close();
         // save all of the episodes
         episodeService.saveAll(episodes);
