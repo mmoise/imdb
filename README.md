@@ -47,7 +47,7 @@ Password: blank
 
 ### API Documentation
 There are three endpoints defined in the service:<br/> 
-`http://localhost:8080/titles` - returns all titles (is paginated by default)<br/>
+`http://localhost:8080/titles` - returns all titles (is paginated by default (20 records)<br/>
 `http://localhost:8080/titles/{titleid}` - returns the title with teh specified titleid<br/>
 `http://localhost:8080/ratings` - assigns a new rating for each title in the database<br/>
 `http://localhost:8080/actuator/health` - provides simple health check

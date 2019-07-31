@@ -4,6 +4,8 @@ package com.imdb.titles.rest;
 import com.imdb.titles.entity.Title;
 import com.imdb.titles.service.PaginatedTitleService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,11 @@ public class TitleController {
     @RequestMapping(value = "/titles",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                    value = "Results page you want to retrieve (0..N).", defaultValue = "0"),
+            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                    value = "Number of records per page.", defaultValue = "20")})
     public ResponseEntity<Page<Title>> getAllTitles(Pageable pageable) {
 
         Page<Title> titles = paginatedTitleService.findAll(pageable);
