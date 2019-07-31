@@ -4,6 +4,7 @@ package com.imdb.titles.rest;
 import com.imdb.titles.entity.Title;
 import com.imdb.titles.service.PaginatedTitleService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class TitleController {
     @RequestMapping(value = "/titles/{titleId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Title> getTitle(@PathVariable String titleId) {
+    public ResponseEntity<Title> getTitle(@ApiParam(name = "titleId", value = "Alphanumeric Unique Identifier of a Title", required = true) @PathVariable String titleId) {
         Title tite = paginatedTitleService.findById(titleId);
         return new ResponseEntity<>(tite, HttpStatus.OK);
     }
