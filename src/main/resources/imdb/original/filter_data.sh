@@ -23,5 +23,8 @@ awk -F'\t' 'NR==FNR{c[$3]++;next};c[$1] > 0' 2018cast.tsv name.basics.tsv > 2018
 #Filter Ratings
 awk -F'\t' 'NR==FNR{c[$1]++;next};c[$1] > 0' 2018titles.tsv title.ratings.tsv > 2018ratings.tsv
 
+# Create new directory
+mkdir ../filtered
+
 # Move files to different directory
 mv 2018titles.tsv 2018episodes.tsv 2018cast.tsv 2018actors.tsv 2018ratings.tsv ../filtered

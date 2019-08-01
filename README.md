@@ -162,11 +162,11 @@ Identify areas where you can make the APIs performant and make suggestions/imple
 how you can improve them.
 ### Solution
 There are a number of ways and areas to improve the performance:<br/>
-###System Design
+### System Design
 * Deploy application in a cluster with load balancing
 * Deploy database in a cluster with specified read and write instances along with load balancing
 
-###Database
+### Database
 * Horizontal Partioning of database - table sizes would be smaller which would result in faster database operations
 * Flatten data and use NoSQL DB - Make use of Lists as a data type and store episode and actors directly on a document. 
 The lack of extra tables would eliminate joins would increase performance and would increase the load time by reducing 
@@ -174,7 +174,7 @@ database operations
 * Use DB Cacheing - Enable so that recently accessed objects are available in memory which would eliminate a trip to the 
 database
 
-###Data Loading
+### Data Loading
 * Use threads to process the data loading in parallel
 * Spring Batch (bypass Hibernate)
 * Import data files directly to DB (via DB processing tool)
