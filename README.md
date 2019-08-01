@@ -71,7 +71,8 @@ in-memory database that would enable high performance for read/writes because it
 data will need to be loaded every single time that the app is started. However, I felt that the performance hit taken during startup 
  greatly outweighed the performance hit duringI also decided to use an ORM 
 in order to manage the database connections, schema creation, and it abstracts the database layer. I chose Hibernate because 
-the learning curve is short, its widely used, and it is supported by Spring Boot.
+the learning curve is short, its widely used, and it is supported by Spring Boot. However, I rried to stick withthe javax.persistence
+annotations instead of using the Hibernate annotations when possible in order to try to abstract from the ORM implementation. 
 
 To filter the files for only 2018 data I decided that the filtering should take place outisde of the java app. I chose to 
 do this as a bash script because of the speed of performing this in bash (both performance and lines of code) vs performing 
@@ -90,6 +91,7 @@ Some of these were confirmed by Sudhir and others were deduced by investigating 
  titleId, seasonNumber, and EpisodeNumber to ensure a unique row
 * Cast represents the relationship between an Actor and a Title. It will not be its own Entity but instead be represented
 as a Join table between Title and Actor. It will be stored as a list of Actors on the Title object
+* The default column length of 255 is enough for all string values
 
 #### Implementation Steps
 1. Determined that I only needed to import the **title.basics.tsv**, **title.episode.tsv**, **title.principals.tsv**, 
