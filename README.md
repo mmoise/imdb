@@ -29,10 +29,10 @@ the following files will now appear in the `src/main/resources/imdb/filtered` di
 * 2018titles.tsv
 
 ## Running the app
-Using Maven: `mvn spring-boot:run`. This will take approx 75 secs to start up
+Using Maven: `mvn spring-boot:run` from the root directory. This will take approx 75 secs to start up
 
 ### Run Tests
-`mvn test`
+`mvn test` from the root directory
 
 ### Viewing the Database contents
 Console URL: `http://localhost:8080/h2-console/login.jsp`<br/>
