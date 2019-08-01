@@ -5,11 +5,6 @@
 * JAVA 8+
 * mvn
 
-### Prerequisites
-For your convenience the raw source files and the filtered files are already located in the code base and can 
-be found in the `src/main/resources/imdb/` directory. The `original` folder contains the raw data from imdb and the
-`filtered` folder contains the filtered files containing only 2018 data. If you prefer to generate these files yourself 
-then read the section titled `Filtering the source files`
 #### Filtering the source files
 The source files for the data can be found here: [https://datasets.imdbws.com/](https://datasets.imdbws.com/)<br/>
 You will need to download the below files
@@ -23,7 +18,7 @@ You will need to download the below files
 Navigate to the `src/main/resources/imdb/original` directory and delete all of the files except the **filter_data.sh**
 file. <br/> Extract these files and place them in the `src/main/resources/imdb/original` directory. **Do not change the
  file names.** Execute the following
-command to run the filter data script from the `src/main/resources/imdb/original` directory `sh filter_data.sh`. This takes 
+command to run the filter data script from the `src/main/resources/imdb/original` directory:<br/> **`sh filter_data.sh`**<br/> This takes 
 approximately 2.5 mins to complete. Read the file to uncover the implementation details. After the script completes execution 
 the following files will now appear in the `src/main/resources/imdb/filtered` directory
 
